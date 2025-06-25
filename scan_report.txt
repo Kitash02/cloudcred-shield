@@ -1,0 +1,40 @@
+CloudCred Shield Scan Report
+=================================
+
+[MEDIUM] .\test-files\config.json (line 2):
+"db_password": "pass123456789012345678901234567890"
+
+[MEDIUM] .\test-files\env_test.env (line 1):
+AWS_SECRET_ACCESS_KEY=Abcdefghijklmnop1234567890ABCDEFGH12
+
+[MEDIUM] .\test-files\scan_report.txt (line 5):
+aws_secret_access_key = AbcdEfghIjklMnopQrstUvwxYz1234567890AB
+
+[MEDIUM] .\test-files\scan_report.txt (line 8):
+my_secret = someSecret12345678901234567890
+
+[LOW] .\test-files\scan_report.txt (line 11):
+abcde12345abcde12345abcde12345abcde12345
+
+[LOW] .\test-files\scan_report.txt (line 14):
+abcde12345abcde12345abcde12345abcde12345
+
+[MEDIUM] .\test-files\scan_report.txt (line 17):
+aws_secret_access_key = AbcdEfghIjklMnopQrstUvwxYz1234567890AB
+
+[MEDIUM] .\test-files\scan_report.txt (line 20):
+my_secret = someSecret12345678901234567890
+
+[LOW] .\test-files\scan_report.txt (line 23):
+abcde12345abcde12345abcde12345abcde12345
+
+[MEDIUM] .\test-files\test.txt (line 1):
+aws_secret_access_key = AbcdEfghIjklMnopQrstUvwxYz1234567890AB
+
+[MEDIUM] .\test-files\test.txt (line 2):
+my_secret = someSecret12345678901234567890
+
+[LOW] .\test-files\test.txt (line 3):
+abcde12345abcde12345abcde12345abcde12345
+
+Total Findings: 12
