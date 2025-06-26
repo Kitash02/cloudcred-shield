@@ -10,8 +10,18 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Responsible for writing the scan report to a file.
+ */
 public class ReportWriter {
 
+    /**
+     * Writes a summary and details of findings to the given file path.
+     *
+     * @param findings   List of findings collected from the scan.
+     * @param outputPath Path to save the report.
+     * @param config     Configuration used for the scan.
+     */
     public void writeReport(List<Finding> findings, String outputPath, ScanConfig config) {
         Map<Severity, Long> countsBySeverity = new EnumMap<>(Severity.class);
         for (Severity s : Severity.values()) {
@@ -26,7 +36,7 @@ public class ReportWriter {
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath, false))) {
-            writer.write("CloudCred Shield Scan Report\n");
+            writer.write("CloudCred Shield - Scan Report\n");
             writer.write("====================================\n");
             writer.write("Date: " + timestamp + "\n");
             writer.write("Directory Scanned: " + config.path + "\n");

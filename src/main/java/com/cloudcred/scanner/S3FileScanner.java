@@ -17,13 +17,15 @@ import java.util.regex.Pattern;
 public class S3FileScanner {
 
     private static final Pattern HIGH_PATTERN = Pattern.compile(
-            "(AKIA[0-9A-Z]{16})|(aws_secret_access_key\s*=\s*[A-Za-z0-9/+=]{40})"
+        "(?i)AWS_ACCESS_KEY_ID\\s*=\\s*AKIA[0-9A-Z]{16}"
     );
+
     private static final Pattern MEDIUM_PATTERN = Pattern.compile(
-            "(?i)(secret|token|key).{0,20}[=:]?\s*[A-Za-z0-9/+=]{30,60}"
+        "(?i)AWS_SECRET_ACCESS_KEY\\s*=\\s*[A-Za-z0-9/+=]{40}"
     );
+
     private static final Pattern LOW_PATTERN = Pattern.compile(
-            "\b[A-Za-z0-9/+=]{40}\b"
+        "\\bAKIA[0-9A-Z]{16}\\b|\\b[A-Za-z0-9/+=]{40}\\b"
     );
 
     private final ScanConfig config;
@@ -32,19 +34,31 @@ public class S3FileScanner {
         this.config = config;
     }
 
+    // New method: scans all buckets listed in config.s3Buckets
     public List<Finding> scanS3() {
-        List<Finding> findings = new ArrayList<>();
-        if (config.s3Bucket == null || config.s3Bucket.isEmpty()) {
-            return findings;
+        List<Finding> allFindings = new ArrayList<>();
+        if (config.s3Buckets == null || config.s3Buckets.isEmpty()) {
+            return allFindings;
         }
 
+        for (String bucket : config.s3Buckets) {
+            allFindings.addAll(scanSingleBucket(bucket));
+        }
+
+        return allFindings;
+    }
+
+    // Existing method: scan a single bucket
+    public List<Finding> scanSingleBucket(String bucketName) {
+        List<Finding> findings = new ArrayList<>();
+
         try (S3Client s3 = S3Client.builder()
-                .region(Region.AWS_GLOBAL)
+                .region(Region.US_EAST_1)
                 .credentialsProvider(DefaultCredentialsProvider.create())
                 .build()) {
 
             ListObjectsV2Request listRequest = ListObjectsV2Request.builder()
-                    .bucket(config.s3Bucket)
+                    .bucket(bucketName)
                     .prefix(config.s3Prefix)
                     .build();
 
@@ -54,7 +68,7 @@ public class S3FileScanner {
                 if (!shouldScan(key)) continue;
 
                 GetObjectRequest getRequest = GetObjectRequest.builder()
-                        .bucket(config.s3Bucket)
+                        .bucket(bucketName)
                         .key(key)
                         .build();
 
@@ -65,13 +79,12 @@ public class S3FileScanner {
                     int lineNum = 0;
                     while ((line = reader.readLine()) != null) {
                         lineNum++;
-
                         if (HIGH_PATTERN.matcher(line).find()) {
-                            findings.add(new Finding("s3://" + key, lineNum, line.trim(), Severity.HIGH));
+                            findings.add(new Finding("s3://" + bucketName + "/" + key, lineNum, line.trim(), Severity.HIGH));
                         } else if (MEDIUM_PATTERN.matcher(line).find()) {
-                            findings.add(new Finding("s3://" + key, lineNum, line.trim(), Severity.MEDIUM));
+                            findings.add(new Finding("s3://" + bucketName + "/" + key, lineNum, line.trim(), Severity.MEDIUM));
                         } else if (LOW_PATTERN.matcher(line).find()) {
-                            findings.add(new Finding("s3://" + key, lineNum, line.trim(), Severity.LOW));
+                            findings.add(new Finding("s3://" + bucketName + "/" + key, lineNum, line.trim(), Severity.LOW));
                         }
                     }
 
@@ -81,7 +94,7 @@ public class S3FileScanner {
             }
 
         } catch (Exception e) {
-            System.out.println("Failed to scan S3 bucket: " + e.getMessage());
+            System.out.println("Failed to scan S3 bucket: " + bucketName + " - " + e.getMessage());
         }
 
         return findings;

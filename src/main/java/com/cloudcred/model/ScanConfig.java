@@ -5,8 +5,8 @@ import com.cloudcred.model.Finding.Severity;
 import java.util.*;
 
 public class ScanConfig {
-    public String path = ".";
-    public Severity minSeverity = Severity.LOW;
+    public String path = "."; // Local path to scan
+    public Severity minSeverity = Severity.LOW; // Minimum severity level
     public Set<String> allowedExtensions = new HashSet<>(Arrays.asList(
             "env", "json", "yml", "yaml", "py", "java", "txt"
     ));
@@ -15,12 +15,14 @@ public class ScanConfig {
             "scan_report.txt"
     ));
 
-    public boolean overwriteReport = true;
-    public String emailAddress = null;
+    public boolean overwriteReport = true; // Whether to overwrite report file
+    public String emailAddress = null;     // Optional email address for alerts
 
-    public String s3Bucket = null;
-    public String s3Prefix = "";
+    public String s3Prefix = "";           // Optional prefix for S3 scanning
 
+    public List<String> s3Buckets = new ArrayList<>(); // List of S3 buckets to scan
+
+    // Legacy support for command-line args (optional if using interactive mode)
     public static ScanConfig fromArgs(String[] args) {
         ScanConfig config = new ScanConfig();
 
@@ -52,7 +54,7 @@ public class ScanConfig {
             } else if (arg.startsWith("--email=")) {
                 config.emailAddress = arg.substring("--email=".length()).trim();
             } else if (arg.startsWith("--s3-bucket=")) {
-                config.s3Bucket = arg.substring("--s3-bucket=".length()).trim();
+                config.s3Buckets.add(arg.substring("--s3-bucket=".length()).trim());
             } else if (arg.startsWith("--s3-prefix=")) {
                 config.s3Prefix = arg.substring("--s3-prefix=".length()).trim();
             }

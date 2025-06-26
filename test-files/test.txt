@@ -1,3 +1,2 @@
-[REDACTED: Credential removed]
-[REDACTED: Credential removed]
-abcde12345abcde12345abcde12345abcde12345
+[REDACTED_SHA256:d608501bb3c26ca8eb679ab39ab38d389c9b561cf6619012292803f085fb2273]
+Another line without issue

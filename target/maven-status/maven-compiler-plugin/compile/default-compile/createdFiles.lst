@@ -1,9 +1,0 @@
-com\cloudcred\model\ScanConfig.class
-com\cloudcred\fixer\Fixer.class
-com\cloudcred\report\ReportWriter.class
-com\cloudcred\Main.class
-com\cloudcred\model\Finding$Severity.class
-com\cloudcred\scanner\S3FileScanner.class
-com\cloudcred\model\Finding.class
-com\cloudcred\scanner\FileScanner.class
-com\cloudcred\alert\AlertService.class
