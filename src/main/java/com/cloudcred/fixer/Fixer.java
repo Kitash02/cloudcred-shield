@@ -1,7 +1,6 @@
 package com.cloudcred.fixer;
 
 import com.cloudcred.model.Finding;
-import com.cloudcred.model.Finding.Severity;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 

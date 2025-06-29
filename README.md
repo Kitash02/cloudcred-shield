@@ -32,15 +32,6 @@ This tool was built for dual purposes:
 - Maven (for dependency resolution and packaging)
 - AWS credentials properly configured for the current environment (for S3 scanning)
 
-### Why Maven?
-
-Maven is required to:
-- Download and manage dependencies (such as AWS SDK)
-- Package the code into a single executable `.jar` file
-- Ensure compatibility with libraries and plugins used in the project
-
-You can optionally replace Maven with Gradle, but this project is Maven-based by default.
-
 ---
 
 ## How to Run
