@@ -1,20 +1,29 @@
 CloudCred Shield - Scan Report
 ====================================
-Date: 2025-06-26 15:08
-Directory Scanned: .
+Date: 2025-06-29 09:56
+Directory Scanned: C:\Users\shaha\Desktop\anecdotes
 Minimum Severity: LOW
 File Types Included: txt, java, json, yml, py, env, yaml
 
 Summary:
 --------
-Total Findings: 1
-  - HIGH: 0
-  - MEDIUM: 0
-  - LOW: 1
+Total Findings: 4
+  - HIGH: 1
+  - MEDIUM: 3
+  - LOW: 0
 
 Findings:
 ---------
 
-[LOW] s3://shahaf-theking/suspicious_string.txt (line 1):
-RandomString: abcde12345abcde12345abcde12345abcde12345
+[HIGH] C:\Users\shaha\Desktop\anecdotes\‏‏תיקיה חדשה\‏‏?מסמך טקסט ?חדש.txt (line 3):
+AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+
+[MEDIUM] C:\Users\shaha\Desktop\anecdotes\‏‏תיקיה חדשה\‏‏?מסמך טקסט ?חדש.txt (line 4):
+AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
+[MEDIUM] C:\Users\shaha\Desktop\anecdotes\‏‏תיקיה חדשה\‏‏?מסמך טקסט ?חדש.txt (line 5):
+token=abcde12345abcde12345abcde12345abcde12345
+
+[MEDIUM] C:\Users\shaha\Desktop\anecdotes\‏‏תיקיה חדשה\‏‏?מסמך טקסט ?חדש.txt (line 6):
+api_key=1234567890abcdef1234567890abcdef
 
