@@ -10,19 +10,19 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
- * Responsible for writing the scan report to a file.
- */
+
+// This class is responsible for generating a human-readable scan report.
+// It summarizes findings and writes details to a file for later review.
 public class ReportWriter {
 
     /**
      * Writes a summary and details of findings to the given file path.
-     *
      * @param findings   List of findings collected from the scan.
      * @param outputPath Path to save the report.
      * @param config     Configuration used for the scan.
      */
     public void writeReport(List<Finding> findings, String outputPath, ScanConfig config) {
+        // Count findings by severity for summary
         Map<Severity, Long> countsBySeverity = new EnumMap<>(Severity.class);
         for (Severity s : Severity.values()) {
             countsBySeverity.put(s, findings.stream().filter(f -> f.getSeverity() == s).count());
@@ -36,6 +36,7 @@ public class ReportWriter {
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath, false))) {
+            // Write report header and scan configuration
             writer.write("CloudCred Shield - Scan Report\n");
             writer.write("====================================\n");
             writer.write("Date: " + timestamp + "\n");
@@ -43,6 +44,7 @@ public class ReportWriter {
             writer.write("Minimum Severity: " + config.minSeverity + "\n");
             writer.write("File Types Included: " + String.join(", ", config.allowedExtensions) + "\n\n");
 
+            // Write summary section
             writer.write("Summary:\n");
             writer.write("--------\n");
             writer.write("Total Findings: " + totalFindings + "\n");
@@ -50,6 +52,7 @@ public class ReportWriter {
             writer.write("  - MEDIUM: " + mediumCount + "\n");
             writer.write("  - LOW: " + lowCount + "\n\n");
 
+            // Write details for each finding
             if (totalFindings > 0) {
                 writer.write("Findings:\n");
                 writer.write("---------\n\n");

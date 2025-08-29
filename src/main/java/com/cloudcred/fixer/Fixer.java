@@ -1,3 +1,4 @@
+
 package com.cloudcred.fixer;
 
 import com.cloudcred.model.Finding;
@@ -10,16 +11,24 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
+// This class is responsible for helping the user remediate detected leaks.
+// It can redact, replace, or leave credentials as-is, based on user choice.
 public class Fixer {
 
+    /**
+     * Handles all findings by grouping them by file and prompting the user for remediation.
+     * @param findings List of detected leaks.
+     */
     public void handleFindings(List<Finding> findings) {
         if (findings.isEmpty()) return;
 
+        // Group findings by file for easier processing
         Map<String, List<Finding>> groupedByFile = new HashMap<>();
         for (Finding finding : findings) {
             groupedByFile.computeIfAbsent(finding.getFilePath(), k -> new ArrayList<>()).add(finding);
         }
 
+        // Remediate each file
         for (Map.Entry<String, List<Finding>> entry : groupedByFile.entrySet()) {
             String filePath = entry.getKey();
             List<Finding> fileFindings = entry.getValue();
@@ -32,6 +41,10 @@ public class Fixer {
         }
     }
 
+    /**
+     * Handles remediation for local files.
+     * Prompts the user for each finding and updates the file accordingly.
+     */
     private void handleLocalFile(String filePath, List<Finding> fileFindings) {
         try {
             List<String> originalLines = new ArrayList<>();
@@ -61,17 +74,21 @@ public class Fixer {
                 String choice = scanner.nextLine().trim();
                 switch (choice) {
                     case "1":
+                        // Leave the line as is
                         break;
                     case "3":
+                        // Replace with a generic placeholder
                         modifiedLines[idx] = "REMOVED_CREDENTIAL";
                         break;
                     case "2":
                     default:
+                        // Replace with a SHA256 hash for redaction
                         modifiedLines[idx] = "[REDACTED_SHA256:" + sha256(originalLines.get(idx)) + "]";
                         break;
                 }
             }
 
+            // Write the modified lines back to the file
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 for (String line : modifiedLines) {
                     writer.write(line);
@@ -86,6 +103,10 @@ public class Fixer {
         }
     }
 
+    /**
+     * Handles remediation for S3 files.
+     * Downloads, modifies, and uploads the file back to S3.
+     */
     private void handleS3File(String s3Path, List<Finding> fileFindings) {
         String bucket = s3Path.split("/")[2];
         String key = s3Path.substring("s3://".length() + bucket.length() + 1);
@@ -127,6 +148,7 @@ public class Fixer {
                 }
             }
 
+            // Write the modified lines to a temp file and upload to S3
             File tempFile = File.createTempFile("s3fix", null);
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
                 for (String l : modifiedLines) {
@@ -144,6 +166,10 @@ public class Fixer {
         }
     }
 
+    /**
+     * Utility method to compute SHA256 hash of a string.
+     * Used for redacting secrets.
+     */
     private String sha256(String input) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

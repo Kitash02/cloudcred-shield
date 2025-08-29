@@ -1,28 +1,51 @@
 package com.cloudcred.model;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.cloudcred.model.Finding.Severity;
 
-import java.util.*;
 
+// This class holds all configuration options for a scan session.
+// It controls what files are scanned, what is ignored, and other scan settings.
 public class ScanConfig {
-    public String path = "."; // Local path to scan
-    public Severity minSeverity = Severity.LOW; // Minimum severity level
+    // Local path to scan
+    public String path = ".";
+    // Minimum severity level to report
+    public Severity minSeverity = Severity.LOW;
+    // List of file extensions to scan for leaks
     public Set<String> allowedExtensions = new HashSet<>(Arrays.asList(
-            "env", "json", "yml", "yaml", "py", "java", "txt"
+        "json", "yml", "yaml", "py", "java", "txt",
+        "ini", "conf", "xml", "properties",
+        "sh", "bat", "ps1",
+        "rb", "js", "ts", "go", "php", "c", "cpp",
+        "dockerfile", "compose",
+        "csv", "log"
     ));
 
+    // List of filenames to ignore during scan
     public Set<String> ignoreFilenames = new HashSet<>(Arrays.asList(
-            "scan_report.txt"
+        "scan_report.txt", "env", "pem", "key", "crt", "p12", "jks", "asc", "vault", "secrets", "credentials", "dockerconfigjson", "aws/credentials", "gpg", "pfx"
     ));
 
-    public boolean overwriteReport = true; // Whether to overwrite report file
-    public String emailAddress = null;     // Optional email address for alerts
+    // Whether to overwrite the report file
+    public boolean overwriteReport = true;
+    // Optional email address for alerts
+    public String emailAddress = null;
 
-    public String s3Prefix = "";           // Optional prefix for S3 scanning
+    // Optional prefix for S3 scanning
+    public String s3Prefix = "";
 
-    public List<String> s3Buckets = new ArrayList<>(); // List of S3 buckets to scan
+    // List of S3 buckets to scan
+    public List<String> s3Buckets = new ArrayList<>();
 
-    // Legacy support for command-line args (optional if using interactive mode)
+    /**
+     * Legacy support for command-line args (optional if using interactive mode)
+     * Allows configuration via command-line arguments.
+     */
     public static ScanConfig fromArgs(String[] args) {
         ScanConfig config = new ScanConfig();
 

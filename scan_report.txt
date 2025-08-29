@@ -1,29 +1,32 @@
 CloudCred Shield - Scan Report
 ====================================
-Date: 2025-06-29 09:56
-Directory Scanned: C:\Users\shaha\Desktop\anecdotes
+Date: 2025-08-29 13:25
+Directory Scanned: test-files
 Minimum Severity: LOW
 File Types Included: txt, java, json, yml, py, env, yaml
 
 Summary:
 --------
-Total Findings: 4
-  - HIGH: 1
-  - MEDIUM: 3
-  - LOW: 0
+Total Findings: 5
+  - HIGH: 2
+  - MEDIUM: 2
+  - LOW: 1
 
 Findings:
 ---------
 
-[HIGH] C:\Users\shaha\Desktop\anecdotes\‏‏תיקיה חדשה\‏‏?מסמך טקסט ?חדש.txt (line 3):
-AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+[HIGH] test-files\high_leak.env (line 1):
+AWS_ACCESS_KEY_ID=AKIA1234567890ABCDEF
 
-[MEDIUM] C:\Users\shaha\Desktop\anecdotes\‏‏תיקיה חדשה\‏‏?מסמך טקסט ?חדש.txt (line 4):
-AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+[HIGH] test-files\high_leak.env (line 2):
+aws_secret_access_key = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 
-[MEDIUM] C:\Users\shaha\Desktop\anecdotes\‏‏תיקיה חדשה\‏‏?מסמך טקסט ?חדש.txt (line 5):
-token=abcde12345abcde12345abcde12345abcde12345
+[LOW] test-files\low_leak.env (line 1):
+random_string=abcdefghijklmnopqrstuvwxyz1234567890abcd
 
-[MEDIUM] C:\Users\shaha\Desktop\anecdotes\‏‏תיקיה חדשה\‏‏?מסמך טקסט ?חדש.txt (line 6):
-api_key=1234567890abcdef1234567890abcdef
+[MEDIUM] test-files\medium_leak.env (line 1):
+my_secret_token=abc123def456ghi789jkl012mno345pqr678stu901
+
+[MEDIUM] test-files\medium_leak.env (line 2):
+password: 123456789012345678901234567890
 
