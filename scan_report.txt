@@ -1,32 +1,15 @@
 CloudCred Shield - Scan Report
 ====================================
-Date: 2025-08-29 13:25
-Directory Scanned: test-files
+Date: 2025-08-29 21:37
+Directory Scanned: .
 Minimum Severity: LOW
-File Types Included: txt, java, json, yml, py, env, yaml
+File Types Included: cpp, c, ini, log, dockerfile, csv, go, py, js, conf, ps1, rb, txt, java, bat, sh, compose, xml, json, yml, php, properties, yaml, ts
 
 Summary:
 --------
-Total Findings: 5
-  - HIGH: 2
-  - MEDIUM: 2
-  - LOW: 1
+Total Findings: 0
+  - HIGH: 0
+  - MEDIUM: 0
+  - LOW: 0
 
-Findings:
----------
-
-[HIGH] test-files\high_leak.env (line 1):
-AWS_ACCESS_KEY_ID=AKIA1234567890ABCDEF
-
-[HIGH] test-files\high_leak.env (line 2):
-aws_secret_access_key = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-
-[LOW] test-files\low_leak.env (line 1):
-random_string=abcdefghijklmnopqrstuvwxyz1234567890abcd
-
-[MEDIUM] test-files\medium_leak.env (line 1):
-my_secret_token=abc123def456ghi789jkl012mno345pqr678stu901
-
-[MEDIUM] test-files\medium_leak.env (line 2):
-password: 123456789012345678901234567890
-
+No findings detected. All clear!
