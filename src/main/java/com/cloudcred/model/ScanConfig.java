@@ -13,7 +13,8 @@ import com.cloudcred.model.Finding.Severity;
 // It controls what files are scanned, what is ignored, and other scan settings.
 public class ScanConfig {
     // Local path to scan
-    public String path = ".";
+    // Only scan files inside the test-files directory by default
+    public String path = "test-files";
     // Minimum severity level to report
     public Severity minSeverity = Severity.LOW;
     // List of file extensions to scan for leaks

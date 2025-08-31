@@ -18,7 +18,7 @@ This tool was built for dual purposes:
 
 ## How it works
 
-- Scans local directories and/or AWS S3 buckets for sensitive content
+- Scans current work directory and/or AWS S3 buckets for sensitive content
 - Uses configurable thresholds (LOW / MEDIUM / HIGH)
 - Allows interactive handling of findings: redaction via hashing, replacement with placeholder, or ignoring
 - Generates a detailed report (`scan_report.txt`)
@@ -34,7 +34,24 @@ This tool was built for dual purposes:
 
 ---
 
-## How to Run
+
+## Pros and Cons
+
+### Pros
+- Can scan, redact, and change AWS S3 files directly from the CLI
+- Flexible remediation options: redact, replace, or ignore leaks with user-friendly prompts
+- Interactive and easy to use for both auditing and education
+- Generates detailed reports for review and compliance
+- Modular design makes it easy to extend detection patterns and file types
+
+### Cons
+- By default, scans only the `test-files` directory; scanning the entire local filesystem is not supported yet
+- Does not support all possible file types or credential formats (can be expanded)
+- Currently focuses on AWS S3 API keys and common patterns, not all credential types
+- No automated CI/CD integration or scheduling (manual run only)
+- No support for encrypted or binary files
+
+###how to run
 
 ### 1. Clone and build the project:
 ```bash
@@ -52,7 +69,7 @@ You will be prompted with interactive questions such as:
 - Minimum severity level (LOW, MEDIUM, HIGH)
 - Whether to scan local files and the directory path (defaults to current folder)
 - Whether to scan AWS S3, with the ability to select specific buckets
-- File extensions to include (e.g., `.env`, `.json`, `.txt`, etc.)
+- File extensions to include (e.g., `.json`, `.txt`, etc.)
 - Whether to open the report after scan completion
 
 ---
